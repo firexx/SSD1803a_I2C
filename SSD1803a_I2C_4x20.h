@@ -340,7 +340,7 @@ public:
 	 BACKLIGHT_OFF will be interpreted as off and BACKLIGHT_ON will drive the
 	 backlight on.
 	 */
-	virtual void setBacklight(uint8_t value) {};
+	virtual void setBacklight(uint8_t value);
 
 	virtual void setContrast(uint8_t contrast);
 	/*!

@@ -55,13 +55,13 @@
 
 
 SSD1803a_I2C_4x20::SSD1803a_I2C_4x20(uint8_t lcd_Addr)
-	:_i2caddr(lcd_Addr),_resetPin(0xFF),_cursor_show(false), _cursor_blink(false)
+	:_i2caddr(lcd_Addr), _resetPin(0xFF), _backlightPin(0xFF), _cursor_show(false), _cursor_blink(false)
 {
 
 }
 
 SSD1803a_I2C_4x20::SSD1803a_I2C_4x20(uint8_t lcd_Addr, uint8_t resetPin)
-	:_i2caddr(lcd_Addr), _resetPin(resetPin),_cursor_show(false),_cursor_blink(false)
+	: _i2caddr(lcd_Addr), _resetPin(resetPin), _backlightPin(0xFF), _cursor_show(false), _cursor_blink(false)
 {
 
 }
@@ -189,6 +189,14 @@ void SSD1803a_I2C_4x20::setBacklightPin(uint8_t pin, Polarity pol)
 {
 	_backlightPin = pin;
 	_backlightPinPolarity = pol;
+}
+
+void SSD1803a_I2C_4x20::setBacklight(uint8_t value)
+{
+	if (_backlightPin == 0xFF)
+		return;
+	pinMode(_backlightPin, OUTPUT);
+	analogWrite(_backlightPin, _backlightPinPolarity == POSITIVE?value:~value);
 }
 
 void SSD1803a_I2C_4x20::setContrast(uint8_t contrast)
