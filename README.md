@@ -1,4 +1,4 @@
-# ST1803a_I2C_4x20 library for Arduino
+# ST1803a_I2C library for Arduino
 
 **Authors:**  **Andrej Kostrov**
 

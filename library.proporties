@@ -1,9 +1,9 @@
-name=SSD1803a_I2C_4x20
+name=SSD1803a_I2C
 version=1.0.0
 author=Andrej Kostrov
-maintainer= https://github.com/dermalog/SSD1803a_I2C_4x20
-sentence=LCD library for MIDAS display with SSD1803a controller over i2c interface for 4x20 display.
+maintainer= https://github.com/dermalog/SSD1803a_I2C
+sentence=LCD library for MIDAS display with SSD1803a controller over i2c interface display.
 paragraph=The library implements base functions of LiquidCrystal for MIDAS LCD Display with SSD1803a controller over their I2C interface
 category=Display
-url=https://github.com/dermalog/SSD1803a_I2C_4x20
+url=https://github.com/dermalog/SSD1803a_I2C
 architectures=*

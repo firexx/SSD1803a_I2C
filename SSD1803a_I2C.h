@@ -15,8 +15,8 @@
 	if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA
 */
 
-#ifndef SSD1803a_I2C_4x20_H
-#define SSD1803a_I2C_4x20_H
+#ifndef SSD1803a_I2C_H
+#define SSD1803a_I2C_H
 
 #include <Arduino.h>
 /*
@@ -38,7 +38,7 @@ typedef enum { POSITIVE, NEGATIVE } Polarity;
 #define BACKLIGHT_ON 255
 #define BACKLIGHT_OFF 0
 
-class SSD1803a_I2C_4x20 : public Print
+class SSD1803a_I2C : public Print
 {
 public:
 	/*!
@@ -50,10 +50,10 @@ public:
 	 @param      lcd_Addr[in] I2C address of the IO expansion module. For I2CLCDextraIO,
 	 the address can be configured using the on board jumpers.
 	 */
-	SSD1803a_I2C_4x20(uint8_t lcd_Addr);
+	SSD1803a_I2C(uint8_t lcd_Addr);
 	
 	// Constructor with reset pin
-	SSD1803a_I2C_4x20(uint8_t lcd_Addr, uint8_t resetPin);
+	SSD1803a_I2C(uint8_t lcd_Addr, uint8_t resetPin);
 
 	/*!
 	 @function

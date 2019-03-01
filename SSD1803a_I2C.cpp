@@ -15,7 +15,7 @@
 	if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA
 */
 
-#include "SSD1803a_I2C_4x20.h"
+#include "SSD1803a_I2C.h"
 
 #define COMMAND_CLEAR_DISPLAY						0x01
 #define COMMAND_RETURN_HOME							0x02
@@ -54,19 +54,19 @@
 
 
 
-SSD1803a_I2C_4x20::SSD1803a_I2C_4x20(uint8_t lcd_Addr)
+SSD1803a_I2C::SSD1803a_I2C(uint8_t lcd_Addr)
 	:_i2caddr(lcd_Addr), _resetPin(0xFF), _backlightPin(0xFF), _cursor_show(false), _cursor_blink(false)
 {
 
 }
 
-SSD1803a_I2C_4x20::SSD1803a_I2C_4x20(uint8_t lcd_Addr, uint8_t resetPin)
+SSD1803a_I2C::SSD1803a_I2C(uint8_t lcd_Addr, uint8_t resetPin)
 	: _i2caddr(lcd_Addr), _resetPin(resetPin), _backlightPin(0xFF), _cursor_show(false), _cursor_blink(false)
 {
 
 }
 
-void SSD1803a_I2C_4x20::begin(uint8_t cols, uint8_t rows)
+void SSD1803a_I2C::begin(uint8_t cols, uint8_t rows)
 {
 	_cols = cols;
 	_numlines = rows;
@@ -80,86 +80,86 @@ void SSD1803a_I2C_4x20::begin(uint8_t cols, uint8_t rows)
 	send_command(COMMAND_ENTRY_MODE_SET | _entrymode);
 }
 
-void SSD1803a_I2C_4x20::clear()
+void SSD1803a_I2C::clear()
 {
 	send_command(COMMAND_CLEAR_DISPLAY);
 }
 
-void SSD1803a_I2C_4x20::home()
+void SSD1803a_I2C::home()
 {
 	send_command(COMMAND_RETURN_HOME);
 }
 
-void SSD1803a_I2C_4x20::noDisplay()
+void SSD1803a_I2C::noDisplay()
 {
 	send_command(COMMAND_8BIT_4LINES_RE0_IS1);  //Function set : RE = 0, IS = 1
 	send_command(COMMAND_DISPLAY_OFF_CURSOR_OFF_BLINK_OFF | ((_cursor_show) ? 0x02 : 0x00) | ((_cursor_blink) ? 0x01 : 0x00));
 	send_command(COMMAND_8BIT_4LINES_RE0_IS0);  //Function set : RE = 0, IS = 0
 }
 
-void SSD1803a_I2C_4x20::display()
+void SSD1803a_I2C::display()
 {
 	send_command(COMMAND_8BIT_4LINES_RE0_IS1);  //Function set : RE = 0, IS = 1
 	send_command(COMMAND_DISPLAY_ON_CURSOR_OFF_BLINK_OFF | ((_cursor_show) ? 0x02 : 0x00) | ((_cursor_blink) ? 0x01 : 0x00));
 	send_command(COMMAND_8BIT_4LINES_RE0_IS0);  //Function set : RE = 0, IS = 0
 }
 
-void SSD1803a_I2C_4x20::noBlink()
+void SSD1803a_I2C::noBlink()
 {
 	cursor_display(_cursor_show, false);
 }
 
-void SSD1803a_I2C_4x20::blink()
+void SSD1803a_I2C::blink()
 {
 	cursor_display(_cursor_show, true);
 }
 
-void SSD1803a_I2C_4x20::noCursor()
+void SSD1803a_I2C::noCursor()
 {
 	cursor_display(false, _cursor_blink);
 }
 
-void SSD1803a_I2C_4x20::cursor()
+void SSD1803a_I2C::cursor()
 {
 	cursor_display(false, _cursor_blink);
 }
 
-void SSD1803a_I2C_4x20::leftToRight()
+void SSD1803a_I2C::leftToRight()
 {
 	_entrymode |= ENTRY_MODE_LEFT_TO_RIGHT;
 	send_command(COMMAND_ENTRY_MODE_SET | _entrymode);
 }
 
-void SSD1803a_I2C_4x20::rightToLeft()
+void SSD1803a_I2C::rightToLeft()
 {
 	_entrymode &= ~ENTRY_MODE_LEFT_TO_RIGHT;
 	send_command(COMMAND_ENTRY_MODE_SET | _entrymode);
 }
 
-void SSD1803a_I2C_4x20::moveCursorLeft()
+void SSD1803a_I2C::moveCursorLeft()
 {
 	send_command(COMMAND_CURSORSHIFT | CURSORSHIFT_MOVELEFT);
 }
 
-void SSD1803a_I2C_4x20::moveCursorRight()
+void SSD1803a_I2C::moveCursorRight()
 {
 	send_command(COMMAND_CURSORSHIFT | CURSORSHIFT_MOVERIGHT);
 }
 
-void SSD1803a_I2C_4x20::autoscroll()
+void SSD1803a_I2C::autoscroll()
 {
 	_entrymode |= ENTRY_MODE_SHIFT_INCREMENT;
 	send_command(COMMAND_ENTRY_MODE_SET | _entrymode);
 
 }
 
-void SSD1803a_I2C_4x20::noAutoscroll()
+void SSD1803a_I2C::noAutoscroll()
 {
 	_entrymode &= ~ENTRY_MODE_SHIFT_INCREMENT;
 	send_command(COMMAND_ENTRY_MODE_SET | _entrymode);
 }
 
-void SSD1803a_I2C_4x20::createChar(uint8_t location, uint8_t charmap[])
+void SSD1803a_I2C::createChar(uint8_t location, uint8_t charmap[])
 {
 	location &= 0x7;
 	send_command(COMMAND_ADDRESS_CGRAM | (location << 3));
@@ -168,30 +168,30 @@ void SSD1803a_I2C_4x20::createChar(uint8_t location, uint8_t charmap[])
 		send_byte(charmap[i]);
 }
 
-void SSD1803a_I2C_4x20::setCursor(uint8_t col, uint8_t row)
+void SSD1803a_I2C::setCursor(uint8_t col, uint8_t row)
 {
 	row = min(row, _numlines - 1);
 	col = min(col, _cols - 1);
 	send_command(COMMAND_ADDRESS_DDRAM | (row * 0x20 + col));
 }
 
-void SSD1803a_I2C_4x20::backlight(void)
+void SSD1803a_I2C::backlight(void)
 {
 	setBacklight(BACKLIGHT_ON);
 }
 
-void SSD1803a_I2C_4x20::noBacklight(void)
+void SSD1803a_I2C::noBacklight(void)
 {
 	setBacklight(BACKLIGHT_OFF);
 }
 
-void SSD1803a_I2C_4x20::setBacklightPin(uint8_t pin, Polarity pol)
+void SSD1803a_I2C::setBacklightPin(uint8_t pin, Polarity pol)
 {
 	_backlightPin = pin;
 	_backlightPinPolarity = pol;
 }
 
-void SSD1803a_I2C_4x20::setBacklight(uint8_t value)
+void SSD1803a_I2C::setBacklight(uint8_t value)
 {
 	if (_backlightPin == 0xFF)
 		return;
@@ -199,7 +199,7 @@ void SSD1803a_I2C_4x20::setBacklight(uint8_t value)
 	analogWrite(_backlightPin, _backlightPinPolarity == POSITIVE?value:~value);
 }
 
-void SSD1803a_I2C_4x20::setContrast(uint8_t contrast)
+void SSD1803a_I2C::setContrast(uint8_t contrast)
 {
 	send_command(COMMAND_8BIT_4LINES_RE0_IS1);  //Function set : RE = 0, IS = 1
 	send_command(0x70 | (contrast & 0x0F));     //Contrast
@@ -207,20 +207,20 @@ void SSD1803a_I2C_4x20::setContrast(uint8_t contrast)
 	send_command(COMMAND_8BIT_4LINES_RE0_IS0);  //Function set : RE = 0, IS = 0
 }
 
-size_t SSD1803a_I2C_4x20::write(uint8_t value)
+size_t SSD1803a_I2C::write(uint8_t value)
 {
 	send_byte(value);
 	return 1;
 }
 
-size_t SSD1803a_I2C_4x20::write(const uint8_t *buffer, size_t size)
+size_t SSD1803a_I2C::write(const uint8_t *buffer, size_t size)
 {
 	send_array(buffer, size);
 	return size;
 }
 
 // -- private functions
-void SSD1803a_I2C_4x20::reset()
+void SSD1803a_I2C::reset()
 {
 	if (_resetPin == 0xFF)
 		return;
@@ -231,7 +231,7 @@ void SSD1803a_I2C_4x20::reset()
 	delay(2);
 }
 
-void SSD1803a_I2C_4x20::init()
+void SSD1803a_I2C::init()
 {
 	send_command(COMMAND_CLEAR_DISPLAY);  //Clear display
 
@@ -257,7 +257,7 @@ void SSD1803a_I2C_4x20::init()
 
 }
 
-void SSD1803a_I2C_4x20::send_command(uint8_t cmd)
+void SSD1803a_I2C::send_command(uint8_t cmd)
 {
 	Wire.beginTransmission(_i2caddr);
 	Wire.write(0x00); // control byte for command
@@ -265,7 +265,7 @@ void SSD1803a_I2C_4x20::send_command(uint8_t cmd)
 	Wire.endTransmission();
 }
 
-void SSD1803a_I2C_4x20::send_byte(uint8_t val)
+void SSD1803a_I2C::send_byte(uint8_t val)
 {
 	Wire.beginTransmission(_i2caddr);
 	Wire.write(0x40); // control byte for data
@@ -273,7 +273,7 @@ void SSD1803a_I2C_4x20::send_byte(uint8_t val)
 	Wire.endTransmission();
 }
 
-void SSD1803a_I2C_4x20::send_array(const uint8_t *buffer, size_t size) {
+void SSD1803a_I2C::send_array(const uint8_t *buffer, size_t size) {
 	Wire.beginTransmission(_i2caddr);
 	Wire.write(0x40); // control byte for data
 	while (size--)	Wire.write(*buffer++);
@@ -281,7 +281,7 @@ void SSD1803a_I2C_4x20::send_array(const uint8_t *buffer, size_t size) {
 }
 
 
-void SSD1803a_I2C_4x20::cursor_display(bool show, bool blink)
+void SSD1803a_I2C::cursor_display(bool show, bool blink)
 {
 	_cursor_blink = blink;
 	_cursor_show = show;

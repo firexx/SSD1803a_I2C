@@ -1,7 +1,7 @@
 {
-    "name": "SSD1803a_I2C_4x20",
-    "keywords": "lcd, SSD1803a",
-    "description": "LCD library for MIDAS display with SSD1803a controller over i2c interface for 4x20 display.",
+    "name": "SSD1803a_I2C",
+    "keywords": "lcd, SSD1803a, i2c",
+    "description": "LCD library for MIDAS display with SSD1803a controller over i2c interface.",
     "authors": {
         "name": "Andrej Kostrov",
         "url": "https://www.dermalog.com"
@@ -9,7 +9,7 @@
     "repository":
     {
       "type": "git",
-      "url": "https://github.com/Dermalog/SSD1803a_I2C_4x20"
+      "url": "https://github.com/Dermalog/SSD1803a_I2C"
     },
     "version": "1.0.0",
     "frameworks": "arduino",

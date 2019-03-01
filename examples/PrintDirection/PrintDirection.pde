@@ -1,9 +1,9 @@
-#include <SSD1803a_I2C_4x20.h>
+#include <SSD1803a_I2C.h>
 
 const byte i2caddr  = 0x3c;
 const byte resetPin = PIN_E6;
 
-SSD1803a_I2C_4x20 lcd(i2caddr,resetPin);
+SSD1803a_I2C lcd(i2caddr,resetPin);
 
 void setup() {  
   lcd.begin(20,4);
