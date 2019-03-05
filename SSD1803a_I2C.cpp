@@ -226,9 +226,9 @@ void SSD1803a_I2C::reset()
 		return;
 	pinMode(_resetPin, OUTPUT);
 	digitalWrite(_resetPin, LOW);
-	delay(2);
+	delay(4);
 	digitalWrite(_resetPin, HIGH);
-	delay(2);
+	delay(50);
 }
 
 void SSD1803a_I2C::init()
